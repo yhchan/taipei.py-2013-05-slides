@@ -1,0 +1,3 @@
+[submodule "mozilla"]
+	path = mozilla
+	url = https://github.com/ametaireau/mozilla-landslide-theme
