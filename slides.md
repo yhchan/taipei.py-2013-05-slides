@@ -113,7 +113,7 @@
 
 ---
 
-# setup.py Gotcha
+# setup.py gotcha
 
 ## Babel setup.py cmdclass integration
 
@@ -151,8 +151,141 @@
 
 ---
 
-# 不能對 virtualenv 客製 <br> 用意：集中到 setup.py
+# 不能對 virtualenv 客製 <br> 猜測用意：集中到 setup.py
 
 ---
 
-# 本地 dependency_links
+# 另外一個我們遇到的麻煩
+
+---
+
+# dependency_links
+
+---
+
+# 不能用 public pypi <br>沒有 local pypi server
+
+---
+
+# 無奈
+
+---
+
+# 第一次嘗試：tarball
+
+---
+
+# 理想狀態
+
+    !python
+    from distutils.core import setup
+    setup(
+        ...
+        dependency_links=[
+            'http://github.com/celery/celery/tarball/master#egg=celery'
+        ]
+    )
+
+---
+
+# gitlab 下載 tarball 不能指定 branch
+
+---
+
+# setup.py 一定要在第一層
+
+---
+
+# 第二次嘗試：從 repo 來
+
+---
+
+# 從 SCM 來
+
+    !python
+    from distutils.core import setup
+    setup(
+        ...
+        dependency_links=[
+            'git+https://example.com/spamneggs/foobar.git#egg=foobar-1.2.3'
+        ]
+    )
+
+---
+
+# setup.py 一定要在第一層...
+
+---
+
+# [Request: Added #subdirectory tag specify a relative subdirectory inside a repo](https://github.com/pypa/pip/pull/526)
+
+---
+
+# 第三次嘗試：git submodules + file:///
+
+---
+
+# git submodules + file:///
+
+
+    !python
+    from distutils.core import setup
+    setup(
+        ...
+        dependency_links=[
+            'file:../../../deps/foobar#foobar'
+        ]
+    )
+
+---
+
+# 但是 tox 就炸了 <br>python setup.py sdist
+
+---
+
+# 老實說：我們的設計不良
+
+---
+
+# 其實 tox 還是很好用 <br> 只要你沒有這兩個問題
+
+---
+
+# 測試 + Flake8
+
+    !ini
+    [tox]
+    envlist = py26, py27
+
+    [testenv]
+    commands = nosetests {posargs:--with-cov --cov-report=xml --with-xunit --cov package}
+    flake8 --exit-zero package
+
+    deps = nose
+    nose-cov
+    coverage
+    mock
+    flake8
+
+    [testenv:py26]
+    basepython={homedir}/.pythonbrew/pythons/Python-2.6.8/bin/python
+
+    [testenv:py27]
+    basepython={homedir}/.pythonbrew/pythons/Python-2.7.5/bin/python
+
+---
+
+# Jenkins Matrix Project
+
+![Jenkins-Matrix](http://i.imgur.com/LPLHWsP.png)
+
+---
+
+# 我覺得不順手的地方
+
+- deps 有修改就會重建 virtualenv
+- 沒有 Travis CI 的 install 區塊
+
+---
+
+# tox 先這樣～
