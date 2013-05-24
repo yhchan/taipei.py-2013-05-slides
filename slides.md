@@ -18,7 +18,7 @@
 
 ---
 
-# 我所知的 CI Services (for Python)
+# Python CI Services
 - [Travis CI](https://travis-ci.org/)
 - [CircleCI](https://circleci.com/)
 - [Codeship](https://www.codeship.io/)
@@ -29,7 +29,11 @@
 
 ---
 
-# 使用情境：<br/>開發機 ubuntu 12.04.2 LTS<br/>實際上線 CentOS 6.4
+# 目前我們的狀況
+
+---
+
+# 開發機 ubuntu 12.04.2 LTS<br/>實際上線 CentOS 5.x + Python 2.6
 
 ---
 
@@ -68,6 +72,10 @@
 
 ---
 
+# 還有 PyPy
+
+---
+
 # 以 Celery 為例
 
 ## Celery version 3.0 runs on,
@@ -78,7 +86,7 @@
 
 ---
 
-# Celery 與 Travis CI 
+# Celery .travis.yml
 
     !yaml
     language: python
@@ -97,15 +105,24 @@
 
 ---
 
+# tox 能做什麼
+
+## tox 是基於 virtualenv 的測試工具
+
+- 檢測專案是否正確安裝在不同的 python 環境
+- 在不同 python 環境執行單元測試
+
+---
+
 # tox.ini
 
     !ini
-    # content of: tox.ini , put in same dir as setup.py
     [tox]
     envlist = py26,py27
+
     [testenv]
-    deps=pytest       # install pytest in the venvs
-    commands=py.test  # or 'nosetests' or ...
+    deps=pytest
+    commands=py.test
 
 ---
 
@@ -120,6 +137,7 @@
     !python
     from distutils.core import setup
     from babel.messages import frontend as babel
+
     setup(
         ...
         cmdclass = {'compile_catalog': babel.compile_catalog,
@@ -130,7 +148,7 @@
 
 ---
 
-# 你會看到
+# Bang!
 
     GLOB sdist-make: /Users/hubert/tmp/samplepy/setup.py
     ...
@@ -151,7 +169,7 @@
 
 ---
 
-# 不能對 virtualenv 客製 <br> 猜測用意：集中到 setup.py
+# 不能對 virtualenv 客製
 
 ---
 
@@ -159,23 +177,27 @@
 
 ---
 
-# dependency_links
+# 緣由：Close Source
 
 ---
 
-# 不能用 public pypi <br>沒有 local pypi server
+# 不能用 public pypi <br>加上沒有 local pypi server
 
 ---
 
-# 無奈
+# 之前根本沒人管 depdency ...
 
 ---
 
-# 第一次嘗試：tarball
+# install_requires<br>dependency_links
 
 ---
 
-# 理想狀態
+# 第一次嘗試
+
+---
+
+# 從 tarball 來
 
     !python
     from distutils.core import setup
@@ -196,7 +218,11 @@
 
 ---
 
-# 第二次嘗試：從 repo 來
+# 喝咖啡 ☕
+
+---
+
+# 第二次嘗試
 
 ---
 
@@ -217,11 +243,15 @@
 
 ---
 
-# [Request: Added #subdirectory tag specify a relative subdirectory inside a repo](https://github.com/pypa/pip/pull/526)
+# [Added #subdirectory tag specify a relative subdirectory inside a repo](https://github.com/pypa/pip/pull/526)
 
 ---
 
-# 第三次嘗試：git submodules + file:///
+# 心中下了場雪 ☃
+
+---
+
+# 第三次嘗試<br>git submodules + file:///
 
 ---
 
@@ -239,7 +269,11 @@
 
 ---
 
-# 但是 tox 就炸了 <br>python setup.py sdist
+# 裝起來了☺
+
+---
+
+# 但是 tox 炸了 ☹ <br>python setup.py sdist
 
 ---
 
@@ -247,11 +281,15 @@
 
 ---
 
-# 其實 tox 還是很好用 <br> 只要你沒有這兩個問題
+# tox 還是很好用
 
 ---
 
-# 測試 + Flake8
+# Continuous Integration
+
+---
+
+# 測試 + Flake8 + Coverage
 
     !ini
     [tox]
@@ -283,9 +321,9 @@
 
 # 我覺得不順手的地方
 
-- deps 有修改就會重建 virtualenv
+- deps 有修改就會重建 virtualenv，不能新增就好嗎？
 - 沒有 Travis CI 的 install 區塊
 
 ---
 
-# tox 先這樣～
+# tox ☀
