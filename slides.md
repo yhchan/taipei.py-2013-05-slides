@@ -327,3 +327,106 @@
 ---
 
 # tox ☀
+
+---
+
+# 測試的起手式
+
+---
+
+# `import unittest`
+
+---
+
+# `assertEqual`
+
+---
+
+# Python 2.6 的世界有點不方便
+
+---
+
+# 即使是簡單比較
+
+
+## Code
+    !python
+    def test_simple_dict_compare_1(self):
+        dict1 = {'a': 1, 'b': 2, 'c': 3, 'd': 4}
+        dict2 = {'a': 1, 'b': 1, 'c': 3, 'd': 5}
+
+        self.assertEqual(dict1, dict2)
+
+## Result
+    AssertionError: {'a': 1, 'c': 3, 'b': 2, 'd': 4} != 
+                    {'a': 1, 'c': 3, 'b': 1, 'd': 5}
+---
+
+# Assertion 看不懂也枉然
+
+---
+
+# `from testfixtures import compare` 
+
+---
+
+# 好讀多了
+
+## Code
+    !python
+    def test_simple_dict_compare_2(self):
+        dict1 = {'a': 1, 'b': 2, 'c': 3, 'd': 4}
+        dict2 = {'a': 1, 'b': 1, 'c': 3, 'd': 5}
+
+        compare(dict1, dict2)
+
+## Result
+    AssertionError: dict not as expected:
+
+    same:
+    ['a', 'c']
+
+    values differ:
+    'b': 2 != 1
+    'd': 4 != 5
+
+---
+
+# compare 遇到 JSON
+
+## Result
+
+    same:
+    [u'completed_in', u'max_id_str', u'next_page', u'page']]
+
+    values differ:
+    u'max_id': 122078461840982020 != 122078461840982021
+    u'results': [{u'created_at': u'Thu, 06 Oct 2011 19:36:17 +0000',
+      u'entities': {u'urls': [{u'display_url': u'bit.ly/q9fyz9',
+                               u'expanded_url': u'http://bit.ly/q9fyz9',
+                               u'indices': [37, 57],
+                               u'url': u'http://t.co/L9JXJ2ee'}]},
+    ...
+    以下三千行
+
+---
+
+# list 只要有一個不一樣就...
+
+---
+
+# Python 2.7 改善很多
+
+## 把差異的部份特別標示出來
+
+                     u'geo': None,
+    -                u'id': 122033350327279620,
+    ?                                        ^
+
+    +                u'id': 122033350327279621,
+    ?
+
+---
+
+# Python 2.6 你可以 <br> `pip install unittest2`
+
