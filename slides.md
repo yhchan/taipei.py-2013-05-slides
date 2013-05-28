@@ -366,11 +366,15 @@
 
 ---
 
-# `from testfixtures import compare` 
+# `import testfixtures`
 
 ---
 
-# 好讀多了
+# `compare`
+
+---
+
+# Use `compare` 好讀多了
 
 ## Code
     !python
@@ -392,7 +396,7 @@
 
 ---
 
-# compare 遇到 JSON
+# `compare` 遇到 JSON
 
 ## Result
 
@@ -430,3 +434,123 @@
 
 # Python 2.6 你可以 <br> `pip install unittest2`
 
+---
+
+# `compare` 還不夠好，但是也還堪用
+
+---
+
+# Mocking
+
+---
+
+# `Replacer`
+
+---
+
+# 以前我們的 code 有點可怕
+
+    !python
+    @patch('hello.yoyo.ClassA')
+    @patch('hello.yoyo.ClassB')
+    def test_hello(self, MockClassA, MockClassB):
+        pass
+
+---
+
+# 多想三分鐘，你可以不要這樣寫
+
+---
+
+# 正常人應該這樣寫...
+
+    !python
+    def test_mock(self):
+        # python 2.6, or using contextlib
+        with patch('test_hello.RealClassA') as mock_a
+            with patch('test_hello.RealClassB') as mock_b:
+                pass
+
+    def test_mock_27(self):
+        # python 2.7+
+        with patch('test_hello.RealClassA') as mock_a, \
+            with patch('test_hello.RealClassB') as mock_b:
+
+            pass
+
+---
+
+# `Replacer`
+
+    !python
+    with Replacer() as r:
+        r.replace('test_hello.RealClassA', MagicMock())
+        r.replace('test_hello.RealClassB', MagicMock())
+
+        instance_a = RealClassA()
+        instance_b = RealClassB()
+
+---
+
+# xUnit (before)
+
+    !python
+    def setUp(self):
+        self.patcher_a = patch('test_hello.RealClassA', spec=True)
+        self.patcher_b = patch('test_hello.RealClassB', spec=True)
+
+        self.mock_a = self.patcher_a.start()
+        self.mock_b = self.patcher_b.start()
+
+    def tearDown(self):
+        self.patcher_a.stop()
+        self.patcher_b.stop()
+
+---
+
+# `tearDown` 會不會漏？
+
+---
+
+# xUnit (after)
+
+    !python
+    def setUp(self):
+        self.replacer = Replacer()
+
+        self.mock_a = MagicMock()
+        self.mock_b = MagicMock()
+
+        self.replacer.replace('test_hello.RealClassA', self.mock_a)
+        self.replacer.replace('test_hello.RealClassB', self.mock_b)
+
+    def tearDown(self):
+        self.replacer.restore()
+
+---
+
+# `testfixtures` 其他的好東西
+
+---
+
+# `TempDirectory` 超好用
+
+---
+
+# `ShouldRaises` <br> 2.7 之後就還好
+
+---
+
+# [Things to make writing tests easier by Chris Withers](Things to make writing tests easier by Chris Withers/)
+
+---
+
+# 時間有限，想說的很多
+
+---
+
+# 謝謝 ☺
+
+---
+
+# Q & A
