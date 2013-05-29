@@ -6,65 +6,11 @@
 
 ---
 
-# 聽過 Travis CI / Codeship 嗎？
+# 寫 code 很開心，but
 
 ---
 
-# 無痛與 Github 整合
-
----
-
-# 但是其他 Private Repo 呢...
-
----
-
-# Python CI Services
-- [Travis CI](https://travis-ci.org/)
-- [CircleCI](https://circleci.com/)
-- [Codeship](https://www.codeship.io/)
-
----
-
-# 還是![Jenkins](http://jenkins-ci.org/sites/default/files/jenkins_logo.png)
-
----
-
-# 目前我們的狀況
-
----
-
-# 開發機 ubuntu 12.04.2 LTS<br/>實際上線 CentOS 5.x + Python 2.6
-
----
-
-# Python 2.6 v.s Python 2.7
-
----
-
-# Syntax
-
-    !python
-    # Python 2.7+ Dictionary Comprehension
-    map = {'a': 1, 'b': 2}
-    inv_map {v: k for k, v in map.items()}
-
-    # Python 2.7+ with statements
-    with open("out.txt","wt"), open("in.txt") as file_out, file_in:
-        pass
-
----
-
-# 寫 Unit Test 也會遇到...
-
-    !python
-    # Python 2.7+ contains more assertions
-    items1 = {'product': 'Worry-Free'}
-    items2 = {'product': 'OfficeScan'}
-    self.assertDictEqual(items1, items2)
-
----
-
-# Python 2 -> Python 3 <br>刺激！
+# 人生最<strike>機車</strike>厲害就是這個 BUT！
 
 ---
 
@@ -86,6 +32,57 @@
 
 ---
 
+# Python 2 -> Python 3 <br>刺激！
+
+---
+
+# 目前我們的狀況
+
+---
+
+# 開發機 ubuntu 12.04.2 LTS<br/>實際上線 CentOS 5.x + Python 2.6
+
+---
+
+# Python 2.6 v.s Python 2.7
+
+---
+
+# Syntax
+
+## Python 2.6 / 2.7 Syntax
+
+    !python
+    # Python 2.7+ Dictionary Comprehension
+    map = {'a': 1, 'b': 2}
+    inv_map {v: k for k, v in map.items()}
+
+    # Python 2.7+ with statements
+    with open("out.txt","wt"), open("in.txt") as file_out, file_in:
+        pass
+
+---
+
+# 寫 Unit Test 也會遇到...
+
+## Python 2.6 / 2.7 Syntax
+
+    !python
+    # Python 2.7+ contains more assertions
+    items1 = {'product': 'Worry-Free'}
+    items2 = {'product': 'OfficeScan'}
+    self.assertDictEqual(items1, items2)
+
+---
+
+# 跨版本的解決方案
+
+---
+
+# Travis CI / Codeship
+
+---
+
 # Celery .travis.yml
 
     !yaml
@@ -98,6 +95,18 @@
     install:
         - pip install --use-mirrors tox
     script: TOXENV=py$(echo $TRAVIS_PYTHON_VERSION | tr -d .) tox -v
+
+---
+
+# 無痛與 Github 整合
+
+---
+
+# 但是其他 Private Repo 呢...
+
+---
+
+# 還是![Jenkins](http://jenkins-ci.org/sites/default/files/jenkins_logo.png)
 
 ---
 
@@ -330,6 +339,10 @@
 
 ---
 
+# 換個主題
+
+---
+
 # 測試的起手式
 
 ---
@@ -374,7 +387,7 @@
 
 ---
 
-# Use `compare` 好讀多了
+# 用 `compare` 好讀多了
 
 ## Code
     !python
@@ -448,26 +461,26 @@
 
 ---
 
-# 以前我們的 code 有點可怕
+# 以前我們的會這樣寫
 
     !python
-    @patch('hello.yoyo.ClassA')
     @patch('hello.yoyo.ClassB')
+    @patch('hello.yoyo.ClassA')
     def test_hello(self, MockClassA, MockClassB):
         pass
 
 ---
 
-# 多想三分鐘，你可以不要這樣寫
+# 但是每 mock 一個就多一個 parameter ...
 
 ---
 
-# 正常人應該這樣寫...
+# 後來我們改成這樣
 
     !python
     def test_mock(self):
         # python 2.6, or using contextlib
-        with patch('test_hello.RealClassA') as mock_a
+        with patch('test_hello.RealClassA') as mock_a:
             with patch('test_hello.RealClassB') as mock_b:
                 pass
 
@@ -492,7 +505,7 @@
 
 ---
 
-# xUnit (before)
+# xUnit with `patch`
 
     !python
     def setUp(self):
@@ -512,7 +525,7 @@
 
 ---
 
-# xUnit (after)
+# xUnit with `Replacer`
 
     !python
     def setUp(self):
