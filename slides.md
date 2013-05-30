@@ -10,7 +10,7 @@
 
 ---
 
-# 人生最<strike>機車</strike>厲害就是這個 BUT！
+# 人生最厲害就是這個 BUT！
 
 ---
 
@@ -36,11 +36,15 @@
 
 ---
 
+# 怎麼支援多個版本的 Python？
+
+---
+
 # 目前我們的狀況
 
 ---
 
-# 開發機 ubuntu 12.04.2 LTS<br/>實際上線 CentOS 5.x + Python 2.6
+# 開發機 Ubuntu 12.04.2 + Python 2.7 <br/>實際上線 CentOS 5.x + Python 2.6
 
 ---
 
@@ -48,9 +52,9 @@
 
 ---
 
-# Syntax
+# 語法不一樣
 
-## Python 2.6 / 2.7 Syntax
+## Python 2.7+ Syntax
 
     !python
     # Python 2.7+ Dictionary Comprehension
@@ -65,7 +69,7 @@
 
 # 寫 Unit Test 也會遇到...
 
-## Python 2.6 / 2.7 Syntax
+## Python 2.7+ Assertions
 
     !python
     # Python 2.7+ contains more assertions
@@ -79,7 +83,7 @@
 
 ---
 
-# Travis CI / Codeship
+# Travis CI
 
 ---
 
@@ -106,7 +110,11 @@
 
 ---
 
-# 還是![Jenkins](http://jenkins-ci.org/sites/default/files/jenkins_logo.png)
+# ![Jenkins](http://jenkins-ci.org/sites/default/files/jenkins_logo.png)
+
+---
+
+# 怎麼跨版本測試？
 
 ---
 
@@ -120,10 +128,11 @@
 
 - 檢測專案是否正確安裝在不同的 python 環境
 - 在不同 python 環境執行單元測試
+- 開發者環境就可以執行
 
 ---
 
-# tox.ini
+# 設定：tox.ini
 
     !ini
     [tox]
@@ -149,10 +158,10 @@
 
     setup(
         ...
-        cmdclass = {'compile_catalog': babel.compile_catalog,
-                    'extract_messages': babel.extract_messages,
-                    'init_catalog': babel.init_catalog,
-                    'update_catalog': babel.update_catalog}
+        cmdclass={'compile_catalog': babel.compile_catalog,
+                  'extract_messages': babel.extract_messages,
+                  'init_catalog': babel.init_catalog,
+                  'update_catalog': babel.update_catalog}
     )
 
 ---
@@ -172,6 +181,8 @@
           from babel.messages import frontend as babel
           ImportError: No module named babel.messages
 
+---
+# `ImportError: No module named babel.messages`
 ---
 
 # 就算指定 deps 也沒用
@@ -198,7 +209,7 @@
 
 ---
 
-# install_requires<br>dependency_links
+# `install_requires`<br>`dependency_links`
 
 ---
 
@@ -260,11 +271,11 @@
 
 ---
 
-# 第三次嘗試<br>git submodules + file:///
+# 第三次嘗試<br>git submodules + file:
 
 ---
 
-# git submodules + file:///
+# git submodules + file:
 
 
     !python
@@ -319,6 +330,10 @@
 
     [testenv:py27]
     basepython={homedir}/.pythonbrew/pythons/Python-2.7.5/bin/python
+
+---
+
+# pythonbrew / pythonz <br> 給你不同版本的 Python
 
 ---
 
@@ -490,6 +505,10 @@
             with patch('test_hello.RealClassB') as mock_b:
 
             pass
+
+---
+
+# PEP20: Flat is better than nested
 
 ---
 
